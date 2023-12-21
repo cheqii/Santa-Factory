@@ -1,11 +1,16 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Mathematics;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class StampTools : Tools
 {
     [SerializeField] private bool isHaveInk;
+    [SerializeField] private GameObject approvedIconPrefab;
+    [SerializeField] private GameObject denyIconPrefab;
+    
     private void Awake()
     {
         // Cursor.visible = false;
@@ -22,11 +27,6 @@ public class StampTools : Tools
     {
         ToolsPositionToCursor();
         CheckRaycastWithTarget();
-        if (isHaveInk && Input.GetMouseButtonDown(1))
-        {
-            isHaveInk = false;
-            Debug.Log("Deny Mail");
-        }
     }
 
     public override void ToolsPositionToCursor()
@@ -55,13 +55,30 @@ public class StampTools : Tools
         {
             if (isHaveInk && Input.GetMouseButtonDown(0))
             {
+                var iconRotate = Random.Range(-30f, 30f);
+                Debug.Log($"rotation : {iconRotate}");
+                approvedIconPrefab.transform.localRotation = Quaternion.Euler(0f, 0f, iconRotate);
+
+                var approvedQuaternion = approvedIconPrefab.transform.localRotation;
+
+                GameObject stampApproved = Instantiate(approvedIconPrefab, transform.position, approvedQuaternion);
                 isHaveInk = false;
                 Debug.Log("Approved Mail");
+                Destroy(stampApproved, 1f);
             }
+            
             if (isHaveInk && Input.GetMouseButtonDown(1))
             {
+                var iconRotate = Random.Range(-30f, 30f);
+                Debug.Log($"rotation : {iconRotate}");
+                denyIconPrefab.transform.localRotation = Quaternion.Euler(0f, 0f, iconRotate);
+                
+                var denyQuaternion = denyIconPrefab.transform.localRotation;
+                
+                GameObject stampDeny = Instantiate(denyIconPrefab, transform.position, denyQuaternion);
                 isHaveInk = false;
                 Debug.Log("Deny Mail");
+                Destroy(stampDeny, 1f);
             }
 
             if (!isHaveInk && Input.GetMouseButtonDown(0) || Input.GetMouseButtonDown(1))
