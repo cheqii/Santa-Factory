@@ -9,7 +9,7 @@ public class Timer : MonoBehaviour
     [SerializeField] private bool timeIsRunning;
     private void Start()
     {
-        timeIsRunning = true;
+        timeIsRunning = true; 
     }
 
     private void Update()

@@ -2348,6 +2348,8 @@ MonoBehaviour:
   - {fileID: 147600537}
   - {fileID: 1609412193}
   badChild:
+  - {fileID: 11400000, guid: 88b0bb425f16ef741a8597be78f90d07, type: 2}
+  - {fileID: 11400000, guid: 228b459b2a473ca4fa97ed401cd6c276, type: 2}
   - {fileID: 11400000, guid: c8900e8003dd02f47b90a9ca0bfbae2e, type: 2}
   - {fileID: 11400000, guid: 7d7f071918544844385341cf0829178c, type: 2}
   - {fileID: 11400000, guid: a9bce059daa148e469abda7fac8b7f44, type: 2}
@@ -2357,6 +2359,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 43e958a9a538ee241af3bce557363993, type: 2}
   - {fileID: 11400000, guid: d9be02019c4af9c498a92a692628108f, type: 2}
   - {fileID: 11400000, guid: 7b08b8af7e13dcb4c9009fdcd8428713, type: 2}
+  - {fileID: 11400000, guid: 289a077aacdce6843b93fb7942a2ef8b, type: 2}
   - {fileID: 11400000, guid: 1a4bb104cbd81a549b951afc5da4de5d, type: 2}
   - {fileID: 11400000, guid: cff3bdfafeb044a498085bedde202ca6, type: 2}
 --- !u!1 &2057974482
