@@ -1,26 +1,16 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using Unity.Mathematics;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
 public class StampTools : Tools
 {
     [SerializeField] private bool isHaveInk;
+    
+    [Header("Icon Stamp Prefabs")]
     [SerializeField] private GameObject approvedIconPrefab;
     [SerializeField] private GameObject denyIconPrefab;
-    
-    private void Awake()
-    {
-        // Cursor.visible = false;
-    }
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        // Cursor.visible = false;
-    }
+    private bool isApproved;
+    private bool isDeny;
 
     // Update is called once per frame
     void Update()
@@ -31,8 +21,11 @@ public class StampTools : Tools
 
     public override void ToolsPositionToCursor()
     {
-        if (gameObject.tag == "StampTools") 
+        if (gameObject.tag == "StampTools")
+        {
+            Cursor.lockState = CursorLockMode.Confined;
             Cursor.visible = false;
+        }
         else Cursor.visible = true;
         base.ToolsPositionToCursor();
     }
