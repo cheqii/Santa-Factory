@@ -39,7 +39,8 @@ public class Mail : MonoBehaviour
     private Blacklist _blacklist;
 
     #endregion
-    
+
+    [SerializeField] private Animator mailAnim;
     
     [Header("Mail Count")]
     [SerializeField] private TextMeshProUGUI mailCountText;
@@ -57,6 +58,7 @@ public class Mail : MonoBehaviour
     void Start()
     {
         _blacklist = FindObjectOfType<Blacklist>();
+        mailCountText.text = $"{mailCount} / {GameController.Instance.childMailRemaining}";
         
         firstMail = true;
         RandomChildMail();
@@ -90,6 +92,7 @@ public class Mail : MonoBehaviour
 
     public void DecreaseStampMailCount(int values)
     {
+        mailAnim.SetTrigger("isShake");
         var mailLeft = GameController.Instance.childMailRemaining;
         if (mailCount <= mailLeft)
         {

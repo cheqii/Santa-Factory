@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class GameController : MonoBehaviour
@@ -25,8 +26,9 @@ public class GameController : MonoBehaviour
     public int currentLives;
 
     public List<Image> heartImg;
-
     public TextMeshProUGUI livesText;
+
+    [SerializeField] private Animator heartShakeAnim;
     
     public int score;
 
@@ -64,6 +66,7 @@ public class GameController : MonoBehaviour
     {
         if (currentLives > 0)
         {
+            // heartShakeAnim.SetTrigger("isShake"); // shake heart anim
             currentLives -= values;
             heartImg[currentLives].color = new Color32(80, 80, 80, 255);
             livesText.text = $"Lives: {currentLives} / {maxLives}";

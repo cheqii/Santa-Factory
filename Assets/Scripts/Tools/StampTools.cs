@@ -13,8 +13,11 @@ public class StampTools : Tools
     [Header("Text Animation Prefabs")]
     [SerializeField] private GameObject approvedTextAnim;
     [SerializeField] private GameObject denyTextAnim;
-    [SerializeField] private GameObject fillInkTextAnim; 
+    [SerializeField] private GameObject fillInkTextAnim;
 
+    [Header("Animator & Animations")]
+    [SerializeField] private Animator inkPadAnim;
+    
     [SerializeField] private GameObject canvas;
     
     private bool approvedStamp;
@@ -23,7 +26,7 @@ public class StampTools : Tools
     private bool blackListCheck;
     
     private Mail _mail;
-
+    
     void Start()
     {
         _mail = FindObjectOfType<Mail>();
@@ -66,6 +69,7 @@ public class StampTools : Tools
             if (!isHaveInk && Input.GetMouseButtonDown(0) || !isHaveInk && Input.GetMouseButtonDown(1))
             {
                 Debug.Log("You have to fill an ink first");
+                inkPadAnim.SetTrigger("InkShake");
                 StampTextFloating(fillInkTextAnim, quaternion.identity, 0.6f);
             }
             if (isHaveInk && Input.GetMouseButtonDown(0))

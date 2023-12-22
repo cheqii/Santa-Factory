@@ -6,6 +6,12 @@ public class Timer : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI timeText;
     [SerializeField] private float timeRemaining;
+    public float TimeRemaining
+    {
+        get => timeRemaining;
+        set => timeRemaining = value;
+    }
+    
     [SerializeField] private bool timeIsRunning;
     private void Start()
     {
