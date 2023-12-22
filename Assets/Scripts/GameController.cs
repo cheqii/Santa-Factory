@@ -23,8 +23,9 @@ public class GameController : MonoBehaviour
     public int maxLives;
     public int currentLives;
     
+    public TextMeshProUGUI livesText;
+    
     public int score;
-    public TextMeshProUGUI scoreText;
 
     #endregion
 
@@ -36,12 +37,27 @@ public class GameController : MonoBehaviour
     private void Start()
     {
         currentLives = maxLives;
+        livesText.text = $"Lives: {currentLives} / {maxLives}";
     }
 
+    public void IncreaseLives(int values)
+    {
+        if (currentLives > 0 && currentLives < maxLives) currentLives += values;
+        if (currentLives >= maxLives) currentLives = maxLives;
+        
+        livesText.text = $"Lives: {currentLives} / {maxLives}";
+    }
     public void DecreaseLives(int values)
     {
-        Debug.Log("Lost Lives!!!");
-        if (currentLives > 0) currentLives -= values;
-        else if (currentLives <= 0) currentLives = 0;
+        if (currentLives > 0)
+        {
+            currentLives -= values;
+            livesText.text = $"Lives: {currentLives} / {maxLives}";
+        }
+        if (currentLives <= 0)
+        {
+            currentLives = 0;
+            livesText.text = $"Game Over";
+        }
     }
 }

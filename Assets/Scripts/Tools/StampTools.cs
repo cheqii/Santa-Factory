@@ -106,8 +106,7 @@ public class StampTools : Tools
     {
         var child = _mail.ChildNameCheck;
         var list = GameController.Instance.allChildren;
-        var notes = _blacklist.ChildNotes;
-        
+
         foreach (var all in list)
         {
             if (child == all.name)
@@ -115,12 +114,20 @@ public class StampTools : Tools
                 if (all.onBlacklist)
                 {
                     Debug.Log("On Blacklist");
-                    if(approvedStamp) _mail.DecreaseStampMailCount(1);
+                    if (approvedStamp)
+                    {
+                        _mail.DecreaseStampMailCount(1);
+                        GameController.Instance.DecreaseLives(1);
+                    }
                     return true;
                 }
                 
                 Debug.Log("Good Child");
-                if(denyStamp) _mail.DecreaseStampMailCount(1);
+                if (denyStamp)
+                {
+                    _mail.DecreaseStampMailCount(1);
+                    GameController.Instance.DecreaseLives(1);
+                }
                 if(approvedStamp) _mail.IncreaseStampMailCount(1);
                 return false;
             }

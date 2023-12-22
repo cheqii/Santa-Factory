@@ -2110,7 +2110,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 2
+  m_SortingOrder: 1
   m_Sprite: {fileID: 21300000, guid: 86291296449ea6644896bdcf438a331e, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -2593,12 +2593,12 @@ GameObject:
   - component: {fileID: 1632139808}
   - component: {fileID: 1632139807}
   m_Layer: 6
-  m_Name: ScoreText
+  m_Name: LivesText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1632139806
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2638,7 +2638,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Score: 0'
+  m_text: 'Lives: 0/0'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 3e4c29ee3e5fb9c4686d964cef0e8fab, type: 2}
   m_sharedMaterial: {fileID: -6253192379435077481, guid: 3e4c29ee3e5fb9c4686d964cef0e8fab, type: 2}
@@ -2701,7 +2701,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: -333.4099, w: 0}
+  m_margin: {x: 0, y: 0, z: -570.8159, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -2812,10 +2812,10 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 041648085b1703a4bbbfc10d7da39b9d, type: 2}
   - {fileID: 11400000, guid: 758cfe213b1413742aa4592efdd7e9ec, type: 2}
   - {fileID: 11400000, guid: 0b5c6ce32f0d54e4dab4b24472bcf5e3, type: 2}
-  maxLives: 0
+  maxLives: 3
   currentLives: 0
+  livesText: {fileID: 1632139807}
   score: 0
-  scoreText: {fileID: 0}
 --- !u!4 &1823983885
 Transform:
   m_ObjectHideFlags: 0

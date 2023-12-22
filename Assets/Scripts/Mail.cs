@@ -1,7 +1,9 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class Mail : MonoBehaviour
 {
@@ -36,9 +38,6 @@ public class Mail : MonoBehaviour
 
     private Blacklist _blacklist;
 
-    // private int blackListIndex;
-    // private List<int> noteList;
-
     #endregion
     
     
@@ -51,12 +50,15 @@ public class Mail : MonoBehaviour
         get => mailCount;
         set => mailCount = value;
     }
+    
+    private bool firstMail;
 
     // Start is called before the first frame update
     void Start()
     {
         _blacklist = FindObjectOfType<Blacklist>();
         
+        firstMail = true;
         RandomChildMail();
     }
 
@@ -104,8 +106,10 @@ public class Mail : MonoBehaviour
     {
         randomChildChance = Random.Range(0, 10);
         var blackListIndex = Random.Range(0,7); // to random child name
+        Debug.Log(blackListIndex);
         var childIndex = Random.Range(0, 13);
         
+        if (firstMail) randomChildChance = 1; // this line make first mail is going to be good child mail
         if (randomChildChance <= 5)
         {
             // use child from good list

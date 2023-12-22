@@ -95,5 +95,5 @@ public class Blacklist : MonoBehaviour
 
         return randomInt;
     }
-    
+
 }
