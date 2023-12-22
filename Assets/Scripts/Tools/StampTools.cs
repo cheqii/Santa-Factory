@@ -1,3 +1,4 @@
+using Unity.Mathematics;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -9,18 +10,22 @@ public class StampTools : Tools
     [SerializeField] private GameObject approvedIconPrefab;
     [SerializeField] private GameObject denyIconPrefab;
 
+    [Header("Text Animation Prefabs")]
+    [SerializeField] private GameObject approvedTextAnim;
+    [SerializeField] private GameObject denyTextAnim;
+
+    [SerializeField] private GameObject canvas;
+    
     private bool approvedStamp;
     private bool denyStamp;
 
     private bool blackListCheck;
     
     private Mail _mail;
-    private Blacklist _blacklist;
 
     void Start()
     {
         _mail = FindObjectOfType<Mail>();
-        _blacklist = FindObjectOfType<Blacklist>();
     }
     
     // Update is called once per frame
@@ -70,6 +75,7 @@ public class StampTools : Tools
                 if (!CheckBlackListStatus())
                 {
                     Debug.Log("Approved Mail");
+                    StampTextFloating(approvedTextAnim, approvedQuaternion);
                 }
                 _mail.RandomChildMail();
                 isHaveInk = false;
@@ -89,6 +95,7 @@ public class StampTools : Tools
                 if (CheckBlackListStatus())
                 {
                     Debug.Log("Deny Mail");
+                    StampTextFloating(denyTextAnim, denyQuaternion);
                 }
                 _mail.RandomChildMail();
                 isHaveInk = false;
@@ -134,5 +141,13 @@ public class StampTools : Tools
         }
 
         return false;
+    }
+
+    void StampTextFloating(GameObject prefab, Quaternion rotate)
+    {
+        var textTrans = new Vector3(transform.position.x, transform.position.y + 2f, transform.position.z);
+        var textAnim = Instantiate(prefab, textTrans,
+            rotate, canvas.transform);
+        Destroy(textAnim, 1f);
     }
 }
