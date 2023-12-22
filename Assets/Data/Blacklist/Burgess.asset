@@ -12,5 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8a62c816e0c07a24c92f456012fcb4ea, type: 3}
   m_Name: Burgess
   m_EditorClassIdentifier: 
+  index: 1
   childName: Burgess Arnold
   onBlacklist: 1

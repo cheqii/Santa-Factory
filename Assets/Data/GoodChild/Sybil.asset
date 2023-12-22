@@ -10,8 +10,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8a62c816e0c07a24c92f456012fcb4ea, type: 3}
-  m_Name: Jeffrey
+  m_Name: Sybil
   m_EditorClassIdentifier: 
-  index: 6
-  childName: Jeffrey Salgado
-  onBlacklist: 1
+  index: 9
+  childName: Sybil Vega
+  onBlacklist: 0
