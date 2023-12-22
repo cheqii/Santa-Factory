@@ -1,5 +1,7 @@
+using MoreMountains.Feedbacks;
 using Unity.Mathematics;
 using UnityEngine;
+using UnityEngine.Events;
 using Random = UnityEngine.Random;
 
 public class StampTools : Tools
@@ -26,6 +28,12 @@ public class StampTools : Tools
     private bool blackListCheck;
     
     private Mail _mail;
+
+    #region -Feel Feedback-
+
+    public UnityEvent Feedbacks;
+
+    #endregion
     
     void Start()
     {
@@ -128,6 +136,7 @@ public class StampTools : Tools
                     Debug.Log("On Blacklist");
                     if (approvedStamp)
                     {
+                        if(Feedbacks != null) Feedbacks.Invoke();
                         _mail.DecreaseStampMailCount(1);
                         GameController.Instance.DecreaseLives(1);
                     }
@@ -137,6 +146,7 @@ public class StampTools : Tools
                 Debug.Log("Good Child");
                 if (denyStamp)
                 {
+                    if(Feedbacks != null) Feedbacks.Invoke();
                     _mail.DecreaseStampMailCount(1);
                     GameController.Instance.DecreaseLives(1);
                 }

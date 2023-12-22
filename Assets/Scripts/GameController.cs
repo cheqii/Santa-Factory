@@ -24,13 +24,12 @@ public class GameController : MonoBehaviour
     [Header("Santa Lives")]
     public int maxLives;
     public int currentLives;
-
+    [SerializeField] private int tempLives;
+    
     public List<Image> heartImg;
     public TextMeshProUGUI livesText;
 
     [SerializeField] private Animator heartShakeAnim;
-    
-    public int score;
 
     #endregion
 
@@ -42,21 +41,26 @@ public class GameController : MonoBehaviour
     private void Start()
     {
         currentLives = maxLives;
+        tempLives = currentLives;
         livesText.text = $"Lives: {currentLives} / {maxLives}";
         
     }
 
     private void Update()
     {
-        
+        if (Input.GetKeyDown(KeyCode.L))
+        {
+            IncreaseLives(1);
+        }
     }
 
     public void IncreaseLives(int values)
     {
         if (currentLives > 0 && currentLives < maxLives)
         {
+            tempLives = currentLives;
             currentLives += values;
-            heartImg[currentLives].color = new Color32(255, 255, 255, 255);
+            heartImg[tempLives].color = new Color32(255, 255, 255, 255);
         }
         if (currentLives >= maxLives) currentLives = maxLives;
         
@@ -66,7 +70,7 @@ public class GameController : MonoBehaviour
     {
         if (currentLives > 0)
         {
-            // heartShakeAnim.SetTrigger("isShake"); // shake heart anim
+            heartShakeAnim.SetTrigger("isShake"); // shake heart anim
             currentLives -= values;
             heartImg[currentLives].color = new Color32(80, 80, 80, 255);
             livesText.text = $"Lives: {currentLives} / {maxLives}";
