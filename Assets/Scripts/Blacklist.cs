@@ -2,33 +2,41 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class Blacklist : MonoBehaviour
 {
     [SerializeField] private List<TextMeshProUGUI> backListNameText;
     [SerializeField] private List<Child> badChild;
-    
-    public List<Child> BadChild
+
+    [SerializeField] private List<string> childNotes;
+
+    public List<string> ChildNotes
     {
-        get => badChild;
-        set => badChild = value;
+        get => childNotes;
+        set => childNotes = value;
     }
 
-    public List<string> tempChild;
     private int randomInt;
-    public List<int> tempInt;
+    [SerializeField] private List<int> tempIndex;
 
-    // Start is called before the first frame update
+    public List<int> TempIndex
+    {
+        get => tempIndex;
+        set => tempIndex = value;
+    }
+
+// Start is called before the first frame update
     void Start()
     {
         foreach (var nameText in backListNameText)
         {
             randomInt = Random.Range(0, 13);
-            tempInt.Add(randomInt);
+            tempIndex.Add(randomInt);
 
             CheckDuplicateName();
             nameText.text = badChild[randomInt].name;
-            tempChild.Add(badChild[randomInt].name);
+            childNotes.Add(badChild[randomInt].name);
         }
     }
 
@@ -42,30 +50,30 @@ public class Blacklist : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.R))
         {
-            tempChild.Clear();
-            tempInt.Clear();
+            childNotes.Clear();
+            tempIndex.Clear();
             foreach (var nameText in backListNameText)
             {
                 randomInt = Random.Range(0, 13);
-                tempInt.Add(randomInt);
+                tempIndex.Add(randomInt);
 
                 CheckDuplicateName();
                 nameText.text = badChild[randomInt].name;
-                tempChild.Add(badChild[randomInt].name);
+                childNotes.Add(badChild[randomInt].name);
             }
         }
     }
 
     void CheckDuplicateName()
     {
-        foreach (var temp in tempChild)
+        foreach (var temp in childNotes)
         {
             if (temp == badChild[randomInt].name)
             {
                 // Debug.Log($"Name {temp} is already have");
-                tempInt.Remove(randomInt);
+                tempIndex.Remove(randomInt);
                 randomInt = RandomNewIndex();
-                tempInt.Add(randomInt);
+                tempIndex.Add(randomInt);
                 CheckDuplicateName(); // check again boi
             }
         }
@@ -75,7 +83,7 @@ public class Blacklist : MonoBehaviour
     {
         int result;
 
-        foreach (var temp in tempInt)
+        foreach (var temp in tempIndex)
         {
             if (randomInt == temp)
             {

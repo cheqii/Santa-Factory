@@ -9,9 +9,20 @@ public class StampTools : Tools
     [SerializeField] private GameObject approvedIconPrefab;
     [SerializeField] private GameObject denyIconPrefab;
 
-    private bool isApproved;
-    private bool isDeny;
+    private bool approvedStamp;
+    private bool denyStamp;
 
+    private bool blackListCheck;
+    
+    private Mail _mail;
+    private Blacklist _blacklist;
+
+    void Start()
+    {
+        _mail = FindObjectOfType<Mail>();
+        _blacklist = FindObjectOfType<Blacklist>();
+    }
+    
     // Update is called once per frame
     void Update()
     {
@@ -48,29 +59,39 @@ public class StampTools : Tools
         {
             if (isHaveInk && Input.GetMouseButtonDown(0))
             {
+                approvedStamp = true;
+                denyStamp = false;
                 var iconRotate = Random.Range(-30f, 30f);
-                Debug.Log($"rotation : {iconRotate}");
                 approvedIconPrefab.transform.localRotation = Quaternion.Euler(0f, 0f, iconRotate);
 
                 var approvedQuaternion = approvedIconPrefab.transform.localRotation;
 
                 GameObject stampApproved = Instantiate(approvedIconPrefab, transform.position, approvedQuaternion);
+                if (!CheckBlackListStatus())
+                {
+                    Debug.Log("Approved Mail");
+                }
+                _mail.RandomChildMail();
                 isHaveInk = false;
-                Debug.Log("Approved Mail");
                 Destroy(stampApproved, 1f);
             }
             
             if (isHaveInk && Input.GetMouseButtonDown(1))
             {
+                approvedStamp = false;
+                denyStamp = true;
                 var iconRotate = Random.Range(-30f, 30f);
-                Debug.Log($"rotation : {iconRotate}");
                 denyIconPrefab.transform.localRotation = Quaternion.Euler(0f, 0f, iconRotate);
                 
                 var denyQuaternion = denyIconPrefab.transform.localRotation;
                 
                 GameObject stampDeny = Instantiate(denyIconPrefab, transform.position, denyQuaternion);
+                if (CheckBlackListStatus())
+                {
+                    Debug.Log("Deny Mail");
+                }
+                _mail.RandomChildMail();
                 isHaveInk = false;
-                Debug.Log("Deny Mail");
                 Destroy(stampDeny, 1f);
             }
 
@@ -79,5 +100,32 @@ public class StampTools : Tools
                 Debug.Log("You have to fill an ink first");
             }
         }
+    }
+
+    public bool CheckBlackListStatus()
+    {
+        var child = _mail.ChildNameCheck;
+        var list = GameController.Instance.allChildren;
+        var notes = _blacklist.ChildNotes;
+        
+        foreach (var all in list)
+        {
+            if (child == all.name)
+            {
+                if (all.onBlacklist)
+                {
+                    Debug.Log("On Blacklist");
+                    if(approvedStamp) _mail.DecreaseStampMailCount(1);
+                    return true;
+                }
+                
+                Debug.Log("Good Child");
+                if(denyStamp) _mail.DecreaseStampMailCount(1);
+                if(approvedStamp) _mail.IncreaseStampMailCount(1);
+                return false;
+            }
+        }
+
+        return false;
     }
 }
