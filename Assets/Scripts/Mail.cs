@@ -114,14 +114,12 @@ public class Mail : MonoBehaviour
         {
             firstMail = false;
             // use child from good list
-            childNameText.color = Color.black;
             childNameText.text = goodChild[childIndex].name;
             childNameCheck = goodChild[childIndex].name;
         }
         else if (randomChildChance > 5)
         {
             // use child from blacklist
-            childNameText.color = Color.red;
             childNameText.text = _blacklist.ChildNotes[blackListIndex];
             childNameCheck = _blacklist.ChildNotes[blackListIndex];
         }

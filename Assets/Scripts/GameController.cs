@@ -75,4 +75,5 @@ public class GameController : MonoBehaviour
             livesText.text = $"Game Over";
         }
     }
+    
 }
