@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GameController : MonoBehaviour
 {
@@ -22,7 +23,9 @@ public class GameController : MonoBehaviour
     [Header("Santa Lives")]
     public int maxLives;
     public int currentLives;
-    
+
+    public List<Image> heartImg;
+
     public TextMeshProUGUI livesText;
     
     public int score;
@@ -38,11 +41,21 @@ public class GameController : MonoBehaviour
     {
         currentLives = maxLives;
         livesText.text = $"Lives: {currentLives} / {maxLives}";
+        
+    }
+
+    private void Update()
+    {
+        
     }
 
     public void IncreaseLives(int values)
     {
-        if (currentLives > 0 && currentLives < maxLives) currentLives += values;
+        if (currentLives > 0 && currentLives < maxLives)
+        {
+            currentLives += values;
+            heartImg[currentLives].color = new Color32(255, 255, 255, 255);
+        }
         if (currentLives >= maxLives) currentLives = maxLives;
         
         livesText.text = $"Lives: {currentLives} / {maxLives}";
@@ -52,11 +65,13 @@ public class GameController : MonoBehaviour
         if (currentLives > 0)
         {
             currentLives -= values;
+            heartImg[currentLives].color = new Color32(80, 80, 80, 255);
             livesText.text = $"Lives: {currentLives} / {maxLives}";
         }
         if (currentLives <= 0)
         {
             currentLives = 0;
+            heartImg[0].color = new Color32(80, 80, 80, 255);
             livesText.text = $"Game Over";
         }
     }

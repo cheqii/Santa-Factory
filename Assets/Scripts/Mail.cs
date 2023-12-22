@@ -112,6 +112,7 @@ public class Mail : MonoBehaviour
         if (firstMail) randomChildChance = 1; // this line make first mail is going to be good child mail
         if (randomChildChance <= 5)
         {
+            firstMail = false;
             // use child from good list
             childNameText.color = Color.black;
             childNameText.text = goodChild[childIndex].name;
