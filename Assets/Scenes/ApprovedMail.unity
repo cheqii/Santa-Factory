@@ -3441,6 +3441,7 @@ MonoBehaviour:
   denyIconPrefab: {fileID: 5894582181056507381, guid: ac5cb241ad1a4934aad18853ca5a802e, type: 3}
   approvedTextAnim: {fileID: 3900034016656652566, guid: dbef1f95ff0f8674588157c22aba2de3, type: 3}
   denyTextAnim: {fileID: 8291532249728050221, guid: 41a3e02f1e79d7543a7d507c683559bc, type: 3}
+  fillInkTextAnim: {fileID: 8886170601815366476, guid: 2b99455ac123cd04fa96b287163dc707, type: 3}
   canvas: {fileID: 2081109122}
 --- !u!1 &2081109122
 GameObject:

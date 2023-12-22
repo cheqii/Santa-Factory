@@ -13,6 +13,7 @@ public class StampTools : Tools
     [Header("Text Animation Prefabs")]
     [SerializeField] private GameObject approvedTextAnim;
     [SerializeField] private GameObject denyTextAnim;
+    [SerializeField] private GameObject fillInkTextAnim; 
 
     [SerializeField] private GameObject canvas;
     
@@ -62,6 +63,11 @@ public class StampTools : Tools
         
         if (hit.collider.CompareTag("PaperMail"))
         {
+            if (!isHaveInk && Input.GetMouseButtonDown(0) || !isHaveInk && Input.GetMouseButtonDown(1))
+            {
+                Debug.Log("You have to fill an ink first");
+                StampTextFloating(fillInkTextAnim, quaternion.identity, 0.6f);
+            }
             if (isHaveInk && Input.GetMouseButtonDown(0))
             {
                 approvedStamp = true;
@@ -75,13 +81,13 @@ public class StampTools : Tools
                 if (!CheckBlackListStatus())
                 {
                     Debug.Log("Approved Mail");
-                    StampTextFloating(approvedTextAnim, approvedQuaternion);
+                    StampTextFloating(approvedTextAnim, approvedQuaternion, 0.5f);
                 }
                 _mail.RandomChildMail();
                 isHaveInk = false;
-                Destroy(stampApproved, 1f);
+                Destroy(stampApproved, 0.5f);
             }
-            
+
             if (isHaveInk && Input.GetMouseButtonDown(1))
             {
                 approvedStamp = false;
@@ -95,16 +101,11 @@ public class StampTools : Tools
                 if (CheckBlackListStatus())
                 {
                     Debug.Log("Deny Mail");
-                    StampTextFloating(denyTextAnim, denyQuaternion);
+                    StampTextFloating(denyTextAnim, denyQuaternion, 0.5f);
                 }
                 _mail.RandomChildMail();
                 isHaveInk = false;
-                Destroy(stampDeny, 1f);
-            }
-
-            if (!isHaveInk && Input.GetMouseButtonDown(0) || Input.GetMouseButtonDown(1))
-            {
-                Debug.Log("You have to fill an ink first");
+                Destroy(stampDeny, 0.5f);
             }
         }
     }
@@ -143,11 +144,11 @@ public class StampTools : Tools
         return false;
     }
 
-    void StampTextFloating(GameObject prefab, Quaternion rotate)
+    void StampTextFloating(GameObject prefab, Quaternion rotate, float time)
     {
         var textTrans = new Vector3(transform.position.x, transform.position.y + 2f, transform.position.z);
         var textAnim = Instantiate(prefab, textTrans,
             rotate, canvas.transform);
-        Destroy(textAnim, 1f);
+        Destroy(textAnim, time);
     }
 }
