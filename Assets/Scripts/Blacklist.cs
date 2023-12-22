@@ -62,15 +62,16 @@ public class Blacklist : MonoBehaviour
         {
             if (temp == badChild[randomInt].name)
             {
-                Debug.Log($"Name {temp} is already have");
+                // Debug.Log($"Name {temp} is already have");
                 tempInt.Remove(randomInt);
-                randomInt = RandomName();
+                randomInt = RandomNewIndex();
                 tempInt.Add(randomInt);
+                CheckDuplicateName(); // check again boi
             }
         }
     }
 
-    int RandomName()
+    int RandomNewIndex()
     {
         int result;
 
