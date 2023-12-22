@@ -2325,7 +2325,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   timeText: {fileID: 420216099}
-  timeRemaining: 10
+  timeRemaining: 300
   timeIsRunning: 0
 --- !u!114 &1823983887
 MonoBehaviour:
@@ -2362,6 +2362,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 289a077aacdce6843b93fb7942a2ef8b, type: 2}
   - {fileID: 11400000, guid: 1a4bb104cbd81a549b951afc5da4de5d, type: 2}
   - {fileID: 11400000, guid: cff3bdfafeb044a498085bedde202ca6, type: 2}
+  tempChild: []
+  tempInt: 
 --- !u!1 &2057974482
 GameObject:
   m_ObjectHideFlags: 0
