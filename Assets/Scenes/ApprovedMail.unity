@@ -4328,13 +4328,15 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 0b5c6ce32f0d54e4dab4b24472bcf5e3, type: 2}
   maxLives: 3
   currentLives: 0
+  tempLives: 0
   heartImg:
   - {fileID: 1361283236}
   - {fileID: 1307068075}
   - {fileID: 443546573}
   livesText: {fileID: 1632139807}
   heartShakeAnim: {fileID: 1332715448}
-  score: 0
+  santaEmoAnim: {fileID: 6341636960493126782, guid: c0a436d56eff0fd46a6f2e67ad4c7354, type: 3}
+  santaEmoGo: {fileID: 4286414862320359559, guid: c0a436d56eff0fd46a6f2e67ad4c7354, type: 3}
 --- !u!4 &1823983885
 Transform:
   m_ObjectHideFlags: 0

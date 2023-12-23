@@ -2,6 +2,7 @@ using MoreMountains.Feedbacks;
 using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
 
 public class StampTools : Tools
@@ -19,7 +20,8 @@ public class StampTools : Tools
 
     [Header("Animator & Animations")]
     [SerializeField] private Animator inkPadAnim;
-    
+
+    [Header("Canvas")]
     [SerializeField] private GameObject canvas;
     
     private bool approvedStamp;

@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
@@ -26,10 +27,21 @@ public class GameController : MonoBehaviour
     public int currentLives;
     [SerializeField] private int tempLives;
     
+    [Header("Heart Lives")]
     public List<Image> heartImg;
     public TextMeshProUGUI livesText;
 
     [SerializeField] private Animator heartShakeAnim;
+
+    #endregion
+
+    #region -Animator & Animations-
+
+    [Header("Animations")]
+    [SerializeField] private Animator santaEmoAnim;
+
+    [Header("Animation GameObject Prefabs")]
+    [SerializeField] private GameObject santaEmoGo;
 
     #endregion
 
@@ -70,6 +82,9 @@ public class GameController : MonoBehaviour
     {
         if (currentLives > 0)
         {
+            var santaEmo = Instantiate(santaEmoGo, santaEmoGo.transform.position, 
+                quaternion.identity);
+            Destroy(santaEmo, 0.5f);
             heartShakeAnim.SetTrigger("isShake"); // shake heart anim
             currentLives -= values;
             heartImg[currentLives].color = new Color32(80, 80, 80, 255);
