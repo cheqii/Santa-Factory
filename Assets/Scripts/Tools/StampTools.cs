@@ -40,28 +40,34 @@ public class StampTools : Tools
     void Start()
     {
         _mail = FindObjectOfType<Mail>();
+        // Cursor.lockState = CursorLockMode.Confined;
     }
     
     // Update is called once per frame
     void Update()
     {
+        if(GameController.Instance.isOver)
+        {
+            Cursor.visible = true;
+            return;
+        }
         ToolsPositionToCursor();
         CheckRaycastWithTarget();
     }
 
     public override void ToolsPositionToCursor()
     {
+        Cursor.lockState = CursorLockMode.Confined;
         if (gameObject.tag == "StampTools")
         {
-            Cursor.lockState = CursorLockMode.Confined;
             Cursor.visible = false;
         }
-        else Cursor.visible = true;
         base.ToolsPositionToCursor();
     }
 
     public override void CheckRaycastWithTarget()
     {
+        
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
         RaycastHit2D hit = Physics2D.GetRayIntersection(ray, Mathf.Infinity);

@@ -3,8 +3,10 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using Unity.Mathematics;
+using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.Serialization;
+using UnityEngine.Rendering.PostProcessing;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class GameController : MonoBehaviour
@@ -19,7 +21,6 @@ public class GameController : MonoBehaviour
 
     #endregion
     
-
     #region -Lives & Score Variables-
 
     [Header("Santa Lives")]
@@ -45,6 +46,21 @@ public class GameController : MonoBehaviour
 
     #endregion
 
+    #region -Panel GameObject-
+    
+    [Header("GameOver Panel")]
+    [SerializeField] private GameObject gameOverPanel;
+
+    #endregion
+
+    #region -Time-
+
+    private Timer timer;
+
+    #endregion
+
+    public bool isOver;
+    
     private void Awake()
     {
         if (Instance == null) Instance = this;
@@ -55,7 +71,9 @@ public class GameController : MonoBehaviour
         currentLives = maxLives;
         tempLives = currentLives;
         livesText.text = $"Lives: {currentLives} / {maxLives}";
-        
+
+        timer = GetComponent<Timer>();
+
     }
 
     private void Update()
@@ -63,6 +81,15 @@ public class GameController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.L))
         {
             IncreaseLives(1);
+        }
+
+        if (gameOverPanel.activeInHierarchy)
+        {
+            PPSetting.Instance.ActivateBloomEffect(true);
+        }
+        else
+        {
+            PPSetting.Instance.ActivateBloomEffect(false);
         }
     }
 
@@ -80,11 +107,12 @@ public class GameController : MonoBehaviour
     }
     public void DecreaseLives(int values)
     {
+        var santaEmo = Instantiate(santaEmoGo, santaEmoGo.transform.position, 
+            quaternion.identity);
+        Destroy(santaEmo, 0.5f);
+        
         if (currentLives > 0)
         {
-            var santaEmo = Instantiate(santaEmoGo, santaEmoGo.transform.position, 
-                quaternion.identity);
-            Destroy(santaEmo, 0.5f);
             heartShakeAnim.SetTrigger("isShake"); // shake heart anim
             currentLives -= values;
             heartImg[currentLives].color = new Color32(80, 80, 80, 255);
@@ -97,5 +125,22 @@ public class GameController : MonoBehaviour
             livesText.text = $"Game Over";
         }
     }
+
+    #region -Button Functions-
+
+    public void ChangeScene(string name)
+    {
+        SceneManager.LoadSceneAsync(name);
+    }
+
+    public void QuitFunc()
+    {
+        Application.Quit();
+    }
+
+    #endregion
     
+    
+    
+
 }

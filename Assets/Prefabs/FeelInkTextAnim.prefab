@@ -68,8 +68,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: You have to fill ink first
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 3e4c29ee3e5fb9c4686d964cef0e8fab, type: 2}
-  m_sharedMaterial: {fileID: -6253192379435077481, guid: 3e4c29ee3e5fb9c4686d964cef0e8fab, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 67efd59e126038e41b6ab250c3a0ca9b, type: 2}
+  m_sharedMaterial: {fileID: -4481978241121606308, guid: 67efd59e126038e41b6ab250c3a0ca9b, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
