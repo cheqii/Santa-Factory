@@ -19,7 +19,6 @@ public class Timer : MonoBehaviour
         get => timeIsRunning;
         set => timeIsRunning = value;
     }
-    
     private void Start()
     {
         timeIsRunning = true; 

@@ -1,4 +1,5 @@
 using MoreMountains.Feedbacks;
+using TMPro;
 using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.Events;
@@ -8,6 +9,12 @@ using Random = UnityEngine.Random;
 public class StampTools : Tools
 {
     [SerializeField] private bool isHaveInk;
+
+    [Header("Stamp Correct Mail Count")]
+    [SerializeField] private int stampCount;
+    [SerializeField] private int tempStamp;
+
+    [SerializeField] private int comboCount;
     
     [Header("Icon Stamp Prefabs")]
     [SerializeField] private GameObject approvedIconPrefab;
@@ -17,6 +24,10 @@ public class StampTools : Tools
     [SerializeField] private GameObject approvedTextAnim;
     [SerializeField] private GameObject denyTextAnim;
     [SerializeField] private GameObject fillInkTextAnim;
+    [SerializeField] private GameObject getHeartTextAnim;
+    [SerializeField] private GameObject comboTextAnim;
+
+    private TMP_Text comboText;
 
     [Header("Animator & Animations")]
     [SerializeField] private Animator inkPadAnim;
@@ -40,6 +51,7 @@ public class StampTools : Tools
     void Start()
     {
         _mail = FindObjectOfType<Mail>();
+        comboText = comboTextAnim.GetComponentInChildren<TextMeshProUGUI>().GetComponent<TMP_Text>();
         // Cursor.lockState = CursorLockMode.Confined;
     }
     
@@ -86,7 +98,7 @@ public class StampTools : Tools
             {
                 Debug.Log("You have to fill an ink first");
                 inkPadAnim.SetTrigger("InkShake");
-                StampTextFloating(fillInkTextAnim, quaternion.identity, 0.6f);
+                StampTextFloating(fillInkTextAnim,2f , quaternion.identity, 0.6f);
             }
             if (isHaveInk && Input.GetMouseButtonDown(0))
             {
@@ -101,7 +113,7 @@ public class StampTools : Tools
                 if (!CheckBlackListStatus())
                 {
                     Debug.Log("Approved Mail");
-                    StampTextFloating(approvedTextAnim, approvedQuaternion, 0.5f);
+                    StampTextFloating(approvedTextAnim,2f, approvedQuaternion, 0.5f);
                 }
                 _mail.RandomChildMail();
                 isHaveInk = false;
@@ -121,7 +133,7 @@ public class StampTools : Tools
                 if (CheckBlackListStatus())
                 {
                     Debug.Log("Deny Mail");
-                    StampTextFloating(denyTextAnim, denyQuaternion, 0.5f);
+                    StampTextFloating(denyTextAnim,2f , denyQuaternion, 0.5f);
                 }
                 _mail.RandomChildMail();
                 isHaveInk = false;
@@ -145,6 +157,10 @@ public class StampTools : Tools
                     if (approvedStamp)
                     {
                         if(Feedbacks != null) Feedbacks.Invoke();
+                        stampCount = 0;
+                        comboCount = 0;
+                        comboText.text = $"Miss";
+                        StampTextFloating(comboTextAnim, 2f, quaternion.identity, 1f);
                         _mail.DecreaseStampMailCount(1);
                         GameController.Instance.DecreaseLives(1);
                     }
@@ -155,10 +171,37 @@ public class StampTools : Tools
                 if (denyStamp)
                 {
                     if(Feedbacks != null) Feedbacks.Invoke();
+                    stampCount = 0;
+                    comboCount = 0;
+                    comboText.text = $"Miss";
+                    StampTextFloating(comboTextAnim, 2f, quaternion.identity, 1f);
                     _mail.DecreaseStampMailCount(1);
                     GameController.Instance.DecreaseLives(1);
                 }
-                if(approvedStamp) _mail.IncreaseStampMailCount(1);
+
+                if (approvedStamp)
+                {
+                    tempStamp = stampCount;
+                    stampCount++;
+                    comboCount++;
+
+                    if (comboCount > 0)
+                    {
+                        comboText.text = $"{comboCount} Combo";
+                        StampTextFloating(comboTextAnim, -2f, quaternion.identity, 2f);
+                    }
+                    if (tempStamp == 4)
+                    {
+                        Debug.Log("Combo 5 mail and get increase lives");
+                        if(GameController.Instance.currentLives < GameController.Instance.maxLives)
+                            StampTextFloating(getHeartTextAnim,3.2f ,
+                            quaternion.identity, 1.5f);
+                        GameController.Instance.IncreaseLives(1);
+                        tempStamp = 0;
+                        stampCount = 0;
+                    }
+                    _mail.IncreaseStampMailCount(1);
+                }
                 return false;
             }
         }
@@ -166,9 +209,10 @@ public class StampTools : Tools
         return false;
     }
 
-    void StampTextFloating(GameObject prefab, Quaternion rotate, float time)
+    void StampTextFloating(GameObject prefab, float height,Quaternion rotate, float time)
     {
-        var textTrans = new Vector3(transform.position.x, transform.position.y + 2f, transform.position.z);
+        // standard height is 2f
+        var textTrans = new Vector3(transform.position.x, transform.position.y + height, transform.position.z);
         var textAnim = Instantiate(prefab, textTrans,
             rotate, canvas.transform);
         Destroy(textAnim, time);
