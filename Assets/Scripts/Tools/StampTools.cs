@@ -46,7 +46,7 @@ public class StampTools : Tools
     // Update is called once per frame
     void Update()
     {
-        if(GameController.Instance.isOver)
+        if(GameController.Instance.isOver || GameController.Instance.isPause)
         {
             Cursor.visible = true;
             return;

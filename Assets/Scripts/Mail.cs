@@ -58,7 +58,7 @@ public class Mail : MonoBehaviour
     void Start()
     {
         _blacklist = FindObjectOfType<Blacklist>();
-        mailCountText.text = $"{mailCount} / {GameController.Instance.childMailRemaining}";
+        mailCountText.text = $"{mailCount} / {GameController.Instance.allChildMail}";
         
         firstMail = true;
         RandomChildMail();
@@ -76,7 +76,7 @@ public class Mail : MonoBehaviour
 
     public void IncreaseStampMailCount(int values)
     {
-        var mailLeft = GameController.Instance.childMailRemaining;
+        var mailLeft = GameController.Instance.allChildMail;
 
         if (mailCount < mailLeft)
         {
@@ -93,7 +93,7 @@ public class Mail : MonoBehaviour
     public void DecreaseStampMailCount(int values)
     {
         mailAnim.SetTrigger("isShake");
-        var mailLeft = GameController.Instance.childMailRemaining;
+        var mailLeft = GameController.Instance.allChildMail;
         if (mailCount <= mailLeft)
         {
             mailCount -= values;

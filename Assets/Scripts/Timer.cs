@@ -13,6 +13,13 @@ public class Timer : MonoBehaviour
     }
     
     [SerializeField] private bool timeIsRunning;
+
+    public bool TimeIsRunning
+    {
+        get => timeIsRunning;
+        set => timeIsRunning = value;
+    }
+    
     private void Start()
     {
         timeIsRunning = true; 

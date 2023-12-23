@@ -7,6 +7,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Rendering.PostProcessing;
 using UnityEngine.SceneManagement;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class GameController : MonoBehaviour
@@ -15,7 +16,8 @@ public class GameController : MonoBehaviour
 
     #region -Child & Mail Variables-
 
-    public int childMailRemaining;
+    private Mail _mail;
+    public int allChildMail;
 
     public List<Child> allChildren;
 
@@ -51,6 +53,11 @@ public class GameController : MonoBehaviour
     [Header("GameOver Panel")]
     [SerializeField] private GameObject gameOverPanel;
 
+    [Header("Paused Panel")]
+    [SerializeField] private GameObject pausedPanel;
+    
+    [SerializeField] private GameObject snowParticle;
+    
     #endregion
 
     #region -Time-
@@ -60,6 +67,7 @@ public class GameController : MonoBehaviour
     #endregion
 
     public bool isOver;
+    public bool isPause;
     
     private void Awake()
     {
@@ -73,23 +81,24 @@ public class GameController : MonoBehaviour
         livesText.text = $"Lives: {currentLives} / {maxLives}";
 
         timer = GetComponent<Timer>();
+        _mail = FindObjectOfType<Mail>();
 
     }
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.L))
-        {
-            IncreaseLives(1);
-        }
+        CheckGameStatus();
 
-        if (gameOverPanel.activeInHierarchy)
+        
+        if (gameOverPanel.activeInHierarchy || isPause)
         {
             PPSetting.Instance.ActivateBloomEffect(true);
+            snowParticle.SetActive(true);
         }
         else
         {
             PPSetting.Instance.ActivateBloomEffect(false);
+            snowParticle.SetActive(false);
         }
     }
 
@@ -126,8 +135,47 @@ public class GameController : MonoBehaviour
         }
     }
 
+    public void CheckGameStatus()
+    {
+        if (currentLives == 0 && _mail.MailCount != allChildMail || timer.TimeRemaining == 0)
+        {
+            isOver = true;
+            gameOverPanel.SetActive(isOver);
+            timer.TimeIsRunning = false;
+        }
+        else if (_mail.MailCount == allChildMail)
+        {
+            Debug.Log("NextStage");
+        }
+
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            if (currentLives != 0 && !isPause && _mail.MailCount != allChildMail && timer.TimeIsRunning)
+            {
+                isPause = true;
+                pausedPanel.SetActive(isPause);
+                timer.TimeIsRunning = false;
+            }
+            else
+            {
+                isPause = false;
+                pausedPanel.SetActive(isPause);
+                timer.TimeIsRunning = true;
+            }
+        }
+
+    }
+    
+
     #region -Button Functions-
 
+    public void ResumeGame()
+    {
+        isPause = false;
+        pausedPanel.SetActive(isPause);
+        timer.TimeIsRunning = true;
+    }
+    
     public void ChangeScene(string name)
     {
         SceneManager.LoadSceneAsync(name);
