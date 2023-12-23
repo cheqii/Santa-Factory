@@ -29,6 +29,11 @@ public class Blacklist : MonoBehaviour
 // Start is called before the first frame update
     void Start()
     {
+        LoadBackListName();
+    }
+
+    void LoadBackListName()
+    {
         foreach (var nameText in backListNameText)
         {
             randomInt = Random.Range(0, 13);
@@ -39,28 +44,19 @@ public class Blacklist : MonoBehaviour
             childNotes.Add(badChild[randomInt].name);
         }
     }
-
-    // Update is called once per frame
-    void Update()
+    
+    public void RefreshBlackListName()
     {
-        RefreshBlackListName();
-    }
-
-    void RefreshBlackListName()
-    {
-        if (Input.GetKeyDown(KeyCode.R))
+        childNotes.Clear();
+        tempIndex.Clear();
+        foreach (var nameText in backListNameText)
         {
-            childNotes.Clear();
-            tempIndex.Clear();
-            foreach (var nameText in backListNameText)
-            {
-                randomInt = Random.Range(0, 13);
-                tempIndex.Add(randomInt);
+            randomInt = Random.Range(0, 13);
+            tempIndex.Add(randomInt);
 
-                CheckDuplicateName();
-                nameText.text = badChild[randomInt].name;
-                childNotes.Add(badChild[randomInt].name);
-            }
+            CheckDuplicateName();
+            nameText.text = badChild[randomInt].name;
+            childNotes.Add(badChild[randomInt].name);
         }
     }
 

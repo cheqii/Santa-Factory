@@ -40,20 +40,24 @@ public class Mail : MonoBehaviour
 
     #endregion
 
+    #region -Mail Variables-
+
     [SerializeField] private Animator mailAnim;
-    
+        
     [Header("Mail Count")]
     [SerializeField] private TextMeshProUGUI mailCountText;
-    
+        
     [SerializeField] private int mailCount;
     public int MailCount
     {
         get => mailCount;
         set => mailCount = value;
     }
-    
+        
     private bool firstMail;
 
+    #endregion
+    
     // Start is called before the first frame update
     void Start()
     {
@@ -67,11 +71,7 @@ public class Mail : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // noteList = _blacklist.TempIndex;
-        if (Input.GetKeyDown(KeyCode.O))
-        {
-            RandomChildMail();
-        }
+        
     }
 
     public void IncreaseStampMailCount(int values)
@@ -109,7 +109,6 @@ public class Mail : MonoBehaviour
     {
         randomChildChance = Random.Range(0, 10);
         var blackListIndex = Random.Range(0,7); // to random child name
-        Debug.Log(blackListIndex);
         var childIndex = Random.Range(0, 13);
         
         if (firstMail) randomChildChance = 1; // this line make first mail is going to be good child mail

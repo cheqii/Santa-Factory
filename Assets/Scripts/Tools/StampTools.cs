@@ -3,7 +3,6 @@ using TMPro;
 using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.Events;
-using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
 
 public class StampTools : Tools
@@ -52,7 +51,6 @@ public class StampTools : Tools
     {
         _mail = FindObjectOfType<Mail>();
         comboText = comboTextAnim.GetComponentInChildren<TextMeshProUGUI>().GetComponent<TMP_Text>();
-        // Cursor.lockState = CursorLockMode.Confined;
     }
     
     // Update is called once per frame

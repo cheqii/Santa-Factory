@@ -15,7 +15,6 @@ public class OnMouseOverUIAnim : MonoBehaviour, IPointerEnterHandler, IPointerEx
     
     public void OnPointerExit(PointerEventData eventData)
     {
-        // Debug.Log("ExitHover");
         animator.ResetTrigger("isHover");
         animator.SetTrigger("exitHover");
     }

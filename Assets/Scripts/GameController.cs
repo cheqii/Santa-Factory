@@ -1,13 +1,8 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using Unity.Mathematics;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.Rendering.PostProcessing;
 using UnityEngine.SceneManagement;
-using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class GameController : MonoBehaviour
@@ -34,14 +29,12 @@ public class GameController : MonoBehaviour
     public List<Image> heartImg;
     public TextMeshProUGUI livesText;
 
+    [Header("Heart Shake Take Damage")]
     [SerializeField] private Animator heartShakeAnim;
 
     #endregion
 
     #region -Animator & Animations-
-
-    [Header("Animations")]
-    [SerializeField] private Animator santaEmoAnim;
 
     [Header("Animation GameObject Prefabs")]
     [SerializeField] private GameObject santaEmoGo;
@@ -56,6 +49,7 @@ public class GameController : MonoBehaviour
     [Header("Paused Panel")]
     [SerializeField] private GameObject pausedPanel;
     
+    [Header("Particle")]
     [SerializeField] private GameObject snowParticle;
     
     #endregion
@@ -68,7 +62,9 @@ public class GameController : MonoBehaviour
 
     public bool isOver;
     public bool isPause;
-    
+
+    #region -Unity Medthods-
+
     private void Awake()
     {
         if (Instance == null) Instance = this;
@@ -82,7 +78,6 @@ public class GameController : MonoBehaviour
 
         timer = GetComponent<Timer>();
         _mail = FindObjectOfType<Mail>();
-
     }
 
     private void Update()
@@ -101,6 +96,10 @@ public class GameController : MonoBehaviour
             snowParticle.SetActive(false);
         }
     }
+
+    #endregion
+    
+    #region -Lives Medthods-
 
     public void IncreaseLives(int values)
     {
@@ -134,6 +133,8 @@ public class GameController : MonoBehaviour
             livesText.text = $"Game Over";
         }
     }
+
+    #endregion
 
     public void CheckGameStatus()
     {
@@ -181,7 +182,7 @@ public class GameController : MonoBehaviour
         SceneManager.LoadSceneAsync(name);
     }
 
-    public void QuitFunc()
+    public void GameQuit()
     {
         Application.Quit();
     }
