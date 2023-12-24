@@ -206,11 +206,13 @@ public class StampTools : Tools
                     if (comboCount > 0)
                     {
                         comboText.text = $"{comboCount} Combo";
+                        SoundManager.Instance.Play("Combo");
                         StampTextFloating(comboTextAnim, -2f, quaternion.identity, 2f);
                     }
                     if (tempStamp == 4)
                     {
                         Debug.Log("Combo 5 mail and get increase lives");
+                        SoundManager.Instance.Play("HeartCombo");
                         if(GameController.Instance.currentLives < GameController.Instance.maxLives)
                             StampTextFloating(getHeartTextAnim,3.5f ,
                             quaternion.identity, 1.5f);

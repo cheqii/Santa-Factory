@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using TMPro;
 using Unity.Mathematics;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
@@ -38,6 +39,9 @@ public class GameController : MonoBehaviour
 
     [Header("Animation GameObject Prefabs")]
     [SerializeField] private GameObject santaEmoGo;
+    [SerializeField] private GameObject cocoaMugGo;
+
+    private Animator cocoaMugAnim;
 
     #endregion
 
@@ -78,13 +82,18 @@ public class GameController : MonoBehaviour
 
         timer = GetComponent<Timer>();
         _mail = FindObjectOfType<Mail>();
+
+        cocoaMugAnim = cocoaMugGo.GetComponentInChildren<Animator>().GetComponent<Animator>();
     }
 
     private void Update()
     {
         CheckGameStatus();
 
-        
+        if (Input.GetKeyDown(KeyCode.A))
+        {
+            IncreaseLives(1);
+        }
         if (gameOverPanel.activeInHierarchy || isPause)
         {
             PPSetting.Instance.ActivateBloomEffect(true);
@@ -103,6 +112,9 @@ public class GameController : MonoBehaviour
 
     public void IncreaseLives(int values)
     {
+        var cocoaMug = Instantiate(cocoaMugGo, cocoaMugGo.transform.position, quaternion.identity);
+        Destroy(cocoaMug, 1.5f);
+        
         if (currentLives > 0 && currentLives < maxLives)
         {
             tempLives = currentLives;
@@ -115,6 +127,8 @@ public class GameController : MonoBehaviour
     }
     public void DecreaseLives(int values)
     {
+        SoundManager.Instance.Play("Hurt");
+        
         var santaEmo = Instantiate(santaEmoGo, santaEmoGo.transform.position, 
             quaternion.identity);
         Destroy(santaEmo, 0.5f);
@@ -173,6 +187,7 @@ public class GameController : MonoBehaviour
 
     public void ResumeGame()
     {
+        SoundManager.Instance.Play("Button");
         isPause = false;
         pausedPanel.SetActive(isPause);
         timer.TimeIsRunning = true;
@@ -180,11 +195,13 @@ public class GameController : MonoBehaviour
     
     public void ChangeScene(string name)
     {
+        SoundManager.Instance.Play("Button");
         SceneManager.LoadSceneAsync(name);
     }
 
     public void GameQuit()
     {
+        SoundManager.Instance.Play("Button");
         Application.Quit();
     }
 

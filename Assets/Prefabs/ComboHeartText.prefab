@@ -68,7 +68,7 @@ MonoBehaviour:
       m_Calls: []
   m_text: 'You got 5 combo mails,
 
-    get a heart!'
+    get a cocoa for reward!'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 3d4718e15226bf84f94d4776bdf6b17b, type: 2}
   m_sharedMaterial: {fileID: -4481978241121606308, guid: 3d4718e15226bf84f94d4776bdf6b17b, type: 2}
