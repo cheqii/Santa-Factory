@@ -13,7 +13,9 @@ public class StampTools : Tools
     [SerializeField] private int stampCount;
     [SerializeField] private int tempStamp;
 
+    [Header("Combo & Miss Count")]
     [SerializeField] private int comboCount;
+    [SerializeField] private int missCount;
     
     [Header("Icon Stamp Prefabs")]
     [SerializeField] private GameObject approvedIconPrefab;
@@ -30,6 +32,8 @@ public class StampTools : Tools
 
     [Header("Animator & Animations")]
     [SerializeField] private Animator inkPadAnim;
+    [SerializeField] private Animator childMailNameAnim;
+    private Animator stampAnim;
 
     [Header("Canvas")]
     [SerializeField] private GameObject canvas;
@@ -46,11 +50,14 @@ public class StampTools : Tools
     public UnityEvent Feedbacks;
 
     #endregion
-    
+
     void Start()
     {
+        stampAnim = GetComponent<Animator>();
         _mail = FindObjectOfType<Mail>();
         comboText = comboTextAnim.GetComponentInChildren<TextMeshProUGUI>().GetComponent<TMP_Text>();
+
+        // StartCoroutine(_mail.RandomChildMail(2f));
     }
     
     // Update is called once per frame
@@ -111,9 +118,11 @@ public class StampTools : Tools
                 if (!CheckBlackListStatus())
                 {
                     Debug.Log("Approved Mail");
-                    StampTextFloating(approvedTextAnim,2f, approvedQuaternion, 0.5f);
+                    childMailNameAnim.Play("GoodChildNameTextAnim");
+                    stampAnim.Play("StampApproved");
+                    StampTextFloating(approvedTextAnim,2.5f, approvedQuaternion, 0.5f);
                 }
-                _mail.RandomChildMail();
+                StartCoroutine(_mail.RandomChildMail(0.75f));
                 isHaveInk = false;
                 Destroy(stampApproved, 0.5f);
             }
@@ -131,9 +140,11 @@ public class StampTools : Tools
                 if (CheckBlackListStatus())
                 {
                     Debug.Log("Deny Mail");
-                    StampTextFloating(denyTextAnim,2f , denyQuaternion, 0.5f);
+                    childMailNameAnim.Play("BadChildNameAnim");
+                    stampAnim.Play("StampDenied");
+                    StampTextFloating(denyTextAnim,2.5f , denyQuaternion, 0.5f);
                 }
-                _mail.RandomChildMail();
+                StartCoroutine(_mail.RandomChildMail(0.75f));
                 isHaveInk = false;
                 Destroy(stampDeny, 0.5f);
             }
@@ -149,7 +160,7 @@ public class StampTools : Tools
         {
             if (child == all.name)
             {
-                if (all.onBlacklist)
+                if (all.onBlacklist) // Child name on mail is on blacklist
                 {
                     Debug.Log("On Blacklist");
                     if (approvedStamp)
@@ -158,6 +169,8 @@ public class StampTools : Tools
                         stampCount = 0;
                         comboCount = 0;
                         comboText.text = $"Miss";
+                        missCount++;
+                        childMailNameAnim.Play("missChildNameAnim");
                         StampTextFloating(comboTextAnim, 2f, quaternion.identity, 1f);
                         _mail.DecreaseStampMailCount(1);
                         GameController.Instance.DecreaseLives(1);
@@ -172,7 +185,9 @@ public class StampTools : Tools
                     stampCount = 0;
                     comboCount = 0;
                     comboText.text = $"Miss";
-                    StampTextFloating(comboTextAnim, 2f, quaternion.identity, 1f);
+                    missCount++;
+                    childMailNameAnim.Play("missChildNameAnim");
+                    StampTextFloating(comboTextAnim, 3f, quaternion.identity, 1f);
                     _mail.DecreaseStampMailCount(1);
                     GameController.Instance.DecreaseLives(1);
                 }
@@ -182,7 +197,7 @@ public class StampTools : Tools
                     tempStamp = stampCount;
                     stampCount++;
                     comboCount++;
-
+                    
                     if (comboCount > 0)
                     {
                         comboText.text = $"{comboCount} Combo";
@@ -192,7 +207,7 @@ public class StampTools : Tools
                     {
                         Debug.Log("Combo 5 mail and get increase lives");
                         if(GameController.Instance.currentLives < GameController.Instance.maxLives)
-                            StampTextFloating(getHeartTextAnim,3.2f ,
+                            StampTextFloating(getHeartTextAnim,3.5f ,
                             quaternion.identity, 1.5f);
                         GameController.Instance.IncreaseLives(1);
                         tempStamp = 0;

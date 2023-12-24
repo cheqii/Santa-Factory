@@ -138,7 +138,8 @@ public class GameController : MonoBehaviour
 
     public void CheckGameStatus()
     {
-        if (currentLives == 0 && _mail.MailCount != allChildMail || timer.TimeRemaining == 0)
+        if (currentLives == 0 && _mail.MailCount != allChildMail 
+            || timer.TimeRemaining == 0 && _mail.MailCount != allChildMail)
         {
             isOver = true;
             gameOverPanel.SetActive(isOver);

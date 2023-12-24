@@ -6,7 +6,7 @@ using UnityEngine.Serialization;
 
 public class Blacklist : MonoBehaviour
 {
-    [SerializeField] private List<TextMeshProUGUI> backListNameText;
+    [SerializeField] private List<TextMeshProUGUI> blackListNameText;
     [SerializeField] private List<Child> badChild;
 
     [SerializeField] private List<string> childNotes;
@@ -29,12 +29,12 @@ public class Blacklist : MonoBehaviour
 // Start is called before the first frame update
     void Start()
     {
-        LoadBackListName();
+        LoadBlackListName();
     }
 
-    void LoadBackListName()
+    void LoadBlackListName()
     {
-        foreach (var nameText in backListNameText)
+        foreach (var nameText in blackListNameText)
         {
             randomInt = Random.Range(0, 13);
             tempIndex.Add(randomInt);
@@ -49,7 +49,7 @@ public class Blacklist : MonoBehaviour
     {
         childNotes.Clear();
         tempIndex.Clear();
-        foreach (var nameText in backListNameText)
+        foreach (var nameText in blackListNameText)
         {
             randomInt = Random.Range(0, 13);
             tempIndex.Add(randomInt);

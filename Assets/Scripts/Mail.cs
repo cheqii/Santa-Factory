@@ -65,7 +65,9 @@ public class Mail : MonoBehaviour
         mailCountText.text = $"{mailCount} / {GameController.Instance.allChildMail}";
         
         firstMail = true;
-        RandomChildMail();
+
+        // RandomChildMail(2f);
+        StartCoroutine(RandomChildMail(0f));
     }
 
     // Update is called once per frame
@@ -105,7 +107,29 @@ public class Mail : MonoBehaviour
         mailCountText.text = $"{mailCount} / {mailLeft}";
     }
 
-    public void RandomChildMail()
+    // public void RandomChildMail()
+    // {
+    //     randomChildChance = Random.Range(0, 10);
+    //     var blackListIndex = Random.Range(0,7); // to random child name
+    //     var childIndex = Random.Range(0, 13);
+    //     
+    //     if (firstMail) randomChildChance = 1; // this line make first mail is going to be good child mail
+    //     if (randomChildChance <= 5)
+    //     {
+    //         firstMail = false;
+    //         // use child from good list
+    //         childNameText.text = goodChild[childIndex].name;
+    //         childNameCheck = goodChild[childIndex].name;
+    //     }
+    //     else if (randomChildChance > 5)
+    //     {
+    //         // use child from blacklist
+    //         childNameText.text = _blacklist.ChildNotes[blackListIndex];
+    //         childNameCheck = _blacklist.ChildNotes[blackListIndex];
+    //     }
+    // }
+
+    public IEnumerator RandomChildMail(float time)
     {
         randomChildChance = Random.Range(0, 10);
         var blackListIndex = Random.Range(0,7); // to random child name
@@ -116,14 +140,19 @@ public class Mail : MonoBehaviour
         {
             firstMail = false;
             // use child from good list
+            yield return new WaitForSeconds(time);
             childNameText.text = goodChild[childIndex].name;
             childNameCheck = goodChild[childIndex].name;
         }
         else if (randomChildChance > 5)
         {
             // use child from blacklist
+            yield return new WaitForSeconds(time);
             childNameText.text = _blacklist.ChildNotes[blackListIndex];
             childNameCheck = _blacklist.ChildNotes[blackListIndex];
         }
+        Debug.Log("In random child mail method");
+        
+        yield return new WaitForSeconds(time);
     }
 }
