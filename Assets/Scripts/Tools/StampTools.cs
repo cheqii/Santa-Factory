@@ -99,14 +99,18 @@ public class StampTools : Tools
         
         if (hit.collider.CompareTag("PaperMail"))
         {
+            var sound = SoundManager.Instance;
             if (!isHaveInk && Input.GetMouseButtonDown(0) || !isHaveInk && Input.GetMouseButtonDown(1))
             {
                 Debug.Log("You have to fill an ink first");
+                sound.Play("FillInk");
                 inkPadAnim.SetTrigger("InkShake");
                 StampTextFloating(fillInkTextAnim,2f , quaternion.identity, 0.6f);
             }
+            
             if (isHaveInk && Input.GetMouseButtonDown(0))
             {
+                sound.Play("StampMail");
                 approvedStamp = true;
                 denyStamp = false;
                 var iconRotate = Random.Range(-30f, 30f);
@@ -129,6 +133,7 @@ public class StampTools : Tools
 
             if (isHaveInk && Input.GetMouseButtonDown(1))
             {
+                sound.Play("StampMail");
                 approvedStamp = false;
                 denyStamp = true;
                 var iconRotate = Random.Range(-30f, 30f);
