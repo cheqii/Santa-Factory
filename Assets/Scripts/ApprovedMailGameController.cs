@@ -105,12 +105,7 @@ public class ApprovedMailGameController : MonoBehaviour
     private void Update()
     {
         CheckGameStatus();
-
-        if (Input.GetKeyDown(KeyCode.A))
-        {
-            isOver = true;
-            isDone = true;
-        }
+        
         if (isOver || isPause || isDone)
         {
             PPSetting.Instance.ActivateBloomEffect(true);
