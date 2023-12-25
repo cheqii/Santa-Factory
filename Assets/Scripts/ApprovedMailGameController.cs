@@ -6,9 +6,9 @@ using UnityEngine.Events;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class GameController : MonoBehaviour
+public class ApprovedMailGameController : MonoBehaviour
 {
-    public static GameController Instance;
+    public static ApprovedMailGameController Instance;
 
     #region -Child & Mail Variables-
 
@@ -46,12 +46,18 @@ public class GameController : MonoBehaviour
     #endregion
 
     #region -Panel GameObject-
+
+    [Header("GameEnd Panel")]
+    [SerializeField] private GameObject gameEndPanel;
     
     [Header("GameOver Panel")]
     [SerializeField] private GameObject gameOverPanel;
 
     [Header("Paused Panel")]
     [SerializeField] private GameObject pausedPanel;
+
+    [Header("Sum of Result GameObject")]
+    [SerializeField] private GameObject sumOfResult;
     
     [Header("Particle")]
     [SerializeField] private GameObject snowParticle;
@@ -66,7 +72,16 @@ public class GameController : MonoBehaviour
 
     public bool isOver;
     public bool isPause;
+    public bool isDone;
+    
+    [Header("Sum of Game Result")]
+    public TextMeshProUGUI timeUsedText;
+    public TextMeshProUGUI heartLeftText;
+    public TextMeshProUGUI missComboCountText;
+    public TextMeshProUGUI maxComboText;
 
+    private StampTools _stampTools;
+    
     #region -Unity Medthods-
 
     private void Awake()
@@ -82,6 +97,7 @@ public class GameController : MonoBehaviour
 
         timer = GetComponent<Timer>();
         _mail = FindObjectOfType<Mail>();
+        _stampTools = FindObjectOfType<StampTools>();
 
         cocoaMugAnim = cocoaMugGo.GetComponentInChildren<Animator>().GetComponent<Animator>();
     }
@@ -92,9 +108,10 @@ public class GameController : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.A))
         {
-            IncreaseLives(1);
+            isOver = true;
+            isDone = true;
         }
-        if (gameOverPanel.activeInHierarchy || isPause)
+        if (isOver || isPause || isDone)
         {
             PPSetting.Instance.ActivateBloomEffect(true);
             snowParticle.SetActive(true);
@@ -113,7 +130,7 @@ public class GameController : MonoBehaviour
     public void IncreaseLives(int values)
     {
         var cocoaMug = Instantiate(cocoaMugGo, cocoaMugGo.transform.position, quaternion.identity);
-        Destroy(cocoaMug, 1.5f);
+        Destroy(cocoaMug, 2f);
         
         if (currentLives > 0 && currentLives < maxLives)
         {
@@ -121,7 +138,11 @@ public class GameController : MonoBehaviour
             currentLives += values;
             heartImg[tempLives].color = new Color32(255, 255, 255, 255);
         }
-        if (currentLives >= maxLives) currentLives = maxLives;
+
+        if (currentLives >= maxLives)
+        {
+            currentLives = maxLives;
+        }
         
         livesText.text = $"Lives: {currentLives} / {maxLives}";
     }
@@ -153,18 +174,35 @@ public class GameController : MonoBehaviour
     public void CheckGameStatus()
     {
         if (currentLives == 0 && _mail.MailCount != allChildMail 
-            || timer.TimeRemaining == 0 && _mail.MailCount != allChildMail)
+            || timer.TimeRemaining == 0 && _mail.MailCount != allChildMail) // Game Over
         {
             isOver = true;
-            gameOverPanel.SetActive(isOver);
+            gameOverPanel.SetActive(true);
             timer.TimeIsRunning = false;
+            sumOfResult.SetActive(true);
+            
+            timeUsedText.text = $"Used Time: Time Out!";
+            heartLeftText.text = $"Heart Left: {currentLives}";
+            missComboCountText.text = $"Miss: {_stampTools.MissCount}";
+            maxComboText.text = $"Max Combo: {_stampTools.MaxCombo}";
         }
-        else if (_mail.MailCount == allChildMail)
+        
+        if (_mail.MailCount == allChildMail) // Game End I mean Player win kub
         {
-            Debug.Log("NextStage");
+            isDone = true;
+            gameEndPanel.SetActive(true);
+            timer.TimeIsRunning = false;
+            sumOfResult.SetActive(true);
+            
+            var usedTime = timer.MaxTime - timer.TimeRemaining;
+            
+            timeUsedText.text = $"Used Time: {timer.DisplayUsedTime(usedTime)}";
+            heartLeftText.text = $"Heart Left: {currentLives}";
+            missComboCountText.text = $"Miss: {_stampTools.MissCount}";
+            maxComboText.text = $"Max Combo: {_stampTools.MaxCombo}";
         }
 
-        if (Input.GetKeyDown(KeyCode.Escape))
+        if (Input.GetKeyDown(KeyCode.Escape)) // Pause Game
         {
             if (currentLives != 0 && !isPause && _mail.MailCount != allChildMail && timer.TimeIsRunning)
             {
@@ -197,12 +235,6 @@ public class GameController : MonoBehaviour
     {
         SoundManager.Instance.Play("Button");
         SceneManager.LoadSceneAsync(name);
-    }
-
-    public void GameQuit()
-    {
-        SoundManager.Instance.Play("Button");
-        Application.Quit();
     }
 
     #endregion

@@ -36,7 +36,7 @@ public class Blacklist : MonoBehaviour
     {
         foreach (var nameText in blackListNameText)
         {
-            randomInt = Random.Range(0, 13);
+            randomInt = Random.Range(0, badChild.Count);
             tempIndex.Add(randomInt);
 
             CheckDuplicateName();
@@ -51,7 +51,7 @@ public class Blacklist : MonoBehaviour
         tempIndex.Clear();
         foreach (var nameText in blackListNameText)
         {
-            randomInt = Random.Range(0, 13);
+            randomInt = Random.Range(0, badChild.Count);
             tempIndex.Add(randomInt);
 
             CheckDuplicateName();
