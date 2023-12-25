@@ -62,7 +62,7 @@ public class Mail : MonoBehaviour
     void Start()
     {
         _blacklist = FindObjectOfType<Blacklist>();
-        mailCountText.text = $"{mailCount} / {GameController.Instance.allChildMail}";
+        mailCountText.text = $"{mailCount} / {ApprovedMailGameController.Instance.allChildMail}";
         
         firstMail = true;
 
@@ -78,7 +78,7 @@ public class Mail : MonoBehaviour
 
     public void IncreaseStampMailCount(int values)
     {
-        var mailLeft = GameController.Instance.allChildMail;
+        var mailLeft = ApprovedMailGameController.Instance.allChildMail;
 
         if (mailCount < mailLeft)
         {
@@ -95,7 +95,7 @@ public class Mail : MonoBehaviour
     public void DecreaseStampMailCount(int values)
     {
         mailAnim.SetTrigger("isShake");
-        var mailLeft = GameController.Instance.allChildMail;
+        var mailLeft = ApprovedMailGameController.Instance.allChildMail;
         if (mailCount <= mailLeft)
         {
             mailCount -= values;
@@ -107,33 +107,11 @@ public class Mail : MonoBehaviour
         mailCountText.text = $"{mailCount} / {mailLeft}";
     }
 
-    // public void RandomChildMail()
-    // {
-    //     randomChildChance = Random.Range(0, 10);
-    //     var blackListIndex = Random.Range(0,7); // to random child name
-    //     var childIndex = Random.Range(0, 13);
-    //     
-    //     if (firstMail) randomChildChance = 1; // this line make first mail is going to be good child mail
-    //     if (randomChildChance <= 5)
-    //     {
-    //         firstMail = false;
-    //         // use child from good list
-    //         childNameText.text = goodChild[childIndex].name;
-    //         childNameCheck = goodChild[childIndex].name;
-    //     }
-    //     else if (randomChildChance > 5)
-    //     {
-    //         // use child from blacklist
-    //         childNameText.text = _blacklist.ChildNotes[blackListIndex];
-    //         childNameCheck = _blacklist.ChildNotes[blackListIndex];
-    //     }
-    // }
-
     public IEnumerator RandomChildMail(float time)
     {
         randomChildChance = Random.Range(0, 10);
         var blackListIndex = Random.Range(0,7); // to random child name
-        var childIndex = Random.Range(0, 13);
+        var childIndex = Random.Range(0, goodChild.Count);
         
         if (firstMail) randomChildChance = 1; // this line make first mail is going to be good child mail
         if (randomChildChance <= 5)

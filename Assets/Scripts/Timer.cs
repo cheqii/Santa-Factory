@@ -5,6 +5,13 @@ using UnityEngine.UI;
 public class Timer : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI timeText;
+    [SerializeField] private float maxTime;
+
+    public float MaxTime
+    {
+        get => maxTime;
+        set => maxTime = value;
+    }
     [SerializeField] private float timeRemaining;
     public float TimeRemaining
     {
@@ -21,6 +28,7 @@ public class Timer : MonoBehaviour
     }
     private void Start()
     {
+        timeRemaining = maxTime;
         timeIsRunning = true; 
     }
 
@@ -49,5 +57,12 @@ public class Timer : MonoBehaviour
         float minutes = Mathf.FloorToInt(time / 60);
         float seconds = Mathf.FloorToInt(time % 60);
         timeText.text = string.Format("{0:00}:{1:00}", minutes, seconds);
+    }
+
+    public string DisplayUsedTime(float time)
+    {
+        float minutes = Mathf.FloorToInt(time / 60);
+        float seconds = Mathf.FloorToInt(time % 60);
+        return string.Format("{0:00}:{1:00}", minutes, seconds);
     }
 }
